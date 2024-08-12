@@ -1,50 +1,50 @@
 # jenv
 
-jdk�̃o�[�W�����Ǘ���e�Ղɍs����悤�ɂ��܂��B
+jdkのバージョン管理を容易に行えるようにします。
 
-## �����
+## 動作環境
 
 Widows11 x64
-���̑��f�o�C�X�ł͓���m�F�͂���Ă��܂���B
+その他デバイスでは動作確認はされていません。
 
-## ���\�z
+## 環境構築
 
-jenv-versoin.zip���_�E�����[�h���āA�W�J���Ă��������B
+jenv-versoin.zipをダウンロードして、展開してください。
 
-�W�J�����t�@�C���̒��ɓ����Ă���jenv�Ƃ����f�B���N�g�����D���ȏꏊ�ֈړ������A�p�X���R�s�[���Ă��������B
-(��: C:\jenv)
+展開したファイルの中に入っているjenvというディレクトリを好きな場所へ移動させ、パスをコピーしてください。
+(例: C:\jenv)
 
-JENV_HOME�Ƃ������ϐ���V���ɍ쐬���A��قǃR�s�[�����p�X��ݒ肵�Ă��������B
+JENV_HOMEという環境変数を新たに作成し、先ほどコピーしたパスを設定してください。
 
-Path�Ƃ������ϐ���%JAVA_HOME%\bin�Ƃ����p�X��ǉ����Ă��������B
+Pathという環境変数に%JAVA_HOME%\binというパスを追加してください。
 
-����Ŋ��\�z�͊����ł��B
+これで環境構築は完了です。
 
-## �g�p���@
+## 使用方法
 
-�p�X�̒ǉ����������s���Ă���΁A�R�}���h�v�����v�g��jenv�Ƃ����R�}���h���g����悤�ɂȂ��Ă���͂��ł��B
+パスの追加が正しく行えていれば、コマンドプロンプトでjenvというコマンドが使えるようになっているはずです。
 
 ### jenv help
 
-�w���v��\�����܂��B
+ヘルプを表示します。
 
 ### jenv version
 
-���ݐݒ肳��Ă���jdk�̃o�[�W������\�����܂��B
+現在設定されているjdkのバージョンを表示します。
 
 ### jenv versions
 
-�C���X�g�[������Ă���jdk�̈ꗗ��\�����܂��B
+インストールされているjdkの一覧を表示します。
 
 ### jenv change version
 
-�w�肵���o�[�W������jdk��ύX���܂��B
-���͗�Fjenv change jdk-20.0.2+9
+指定したバージョンにjdkを変更します。
+入力例：jenv change jdk-20.0.2+9
 
 ### jenv list
 
-�C���X�g�[���\��jdk�̃o�[�W������\�����܂��B
-�o�͗�F
+インストール可能なjdkのバージョンを表示します。
+出力例：
 8
 11
 16
@@ -57,9 +57,9 @@ Path�Ƃ������ϐ���%JAVA_HOME%\bin�Ƃ����p�X��ǉ����Ă��������B
 
 ### jenv list version
 
-�w�肵���o�[�W�����ł̃C���X�g�[���\��jdk�̈ꗗ��\�����܂��B
-���͗�Fjenv list 8
-�o�͗�F
+指定したバージョンでのインストール可能なjdkの一覧を表示します。
+入力例：jenv list 8
+出力例：
 jdk8u422-b05
 jdk8u412-b08
 jdk8u402-b06
@@ -79,18 +79,20 @@ jdk8u302-b08
 
 ### jenv install version
 
-�w�肵���o�[�W������jdk���C���X�g�[�����܂��B
-���͗�Fjenv install jdk8u422-b05
+指定したバージョンのjdkをインストールします。
+入力例：jenv install jdk8u422-b05
 
 ### jenv delete version
 
-�w�肵���o�[�W������jdk���폜���܂��B
-���͗�Fjenv delete jdk8u422-b05
+指定したバージョンのjdkを削除します。
+入力例：jenv delete jdk8u422-b05
 
-## ���ӓ_
+## 注意点
 
-jdk�͂��ׂ�%JENV_HOME%\java�ɃC���X�g�[������܂��B
+jdkはすべて%JENV_HOME%\javaにインストールされます。
 
-���̃v���O�����̎g�p�͎��ȐӔC�ł��肢���܂��B
+jdkの切り替えはJAVA_HOMEを書き換えることによって実現しています。
 
-����README�̍ŏI�X�V��jenv-1.0�̃����[�X���ł��B
+このプログラムの使用は自己責任でお願いします。
+
+このREADMEの最終更新はjenv-1.0のリリース時です。
