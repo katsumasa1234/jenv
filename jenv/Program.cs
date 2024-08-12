@@ -94,8 +94,8 @@ namespace jenv
 				"・change version [指定したバージョンに変更します] (例: jenv change jdk-20.0.2+9)\n" +
 				"・list [利用可能なバージョンを表示します]\n" +
 				"・list version [指定したバージョンのインストール可能なバージョンを表示します (例: jenv list 20)\n" +
-				"・install version [指定したバージョンをインストールします] (例: jenv install 20.0.2+9)\n" +
-				"・delete version [指定したバージョンを削除します] (例: jenv delete 20.0.2+9)");
+				"・install version [指定したバージョンをインストールします] (例: jenv install jdk-20.0.2+9)\n" +
+				"・delete version [指定したバージョンを削除します] (例: jenv delete jdk-20.0.2+9)");
 		}
 
 		static void changeVersion(string version)
@@ -140,8 +140,7 @@ namespace jenv
 
 		static void install(string version)
 		{
-			var httpVersion = version.Replace("+", "%2B");
-			string url = "https://api.adoptium.net/v3/binary/version/jdk-" + httpVersion + "/windows/x64/jdk/hotspot/normal/eclipse?project=jdk";
+			string url = "https://api.adoptium.net/v3/binary/version/" + version + "/windows/x64/jdk/hotspot/normal/eclipse?project=jdk";
 			using (HttpClient client = new HttpClient())
 			{
 				try
@@ -175,15 +174,15 @@ namespace jenv
 		{
 			try
 			{
-				string apiUrl = "https://api.adoptium.net/v3/info/release_versions?heap_size=normal&image_type=jdk&os=windows&page=0&page_size=50&project=jdk&release_type=ga&semver=false&sort_method=DEFAULT&sort_order=DESC&vendor=eclipse&version=%5B" + version + "%2C" + (int.Parse(version) + 1) + "%29";
+				string apiUrl = "https://api.adoptium.net/v3/info/release_names?architecture=x64&heap_size=normal&image_type=jdk&jvm_impl=hotspot&page=0&os=windows&page_size=20&project=jdk&release_type=ga&semver=false&sort_method=DEFAULT&sort_order=DESC&vendor=eclipse&version=%5B" + version + "%2C" + (int.Parse(version) + 1) + "%29";
 				List<string> versions = new List<string>();
 				using (HttpClient client = new HttpClient())
 				{
 					string jsonResponse = client.GetStringAsync(apiUrl).Result;
-					JArray json = JArray.Parse(JObject.Parse(jsonResponse)["versions"].ToString());
+					JArray json = JArray.Parse(JObject.Parse(jsonResponse)["releases"].ToString());
 					for (int i = 0; json.Count > i; i++)
 					{
-						versions.Add(json[i]["openjdk_version"].ToString());
+						versions.Add(json[i].ToString());
 					}
 				}
 				return versions;
