@@ -5,6 +5,7 @@ jdkのバージョン管理を容易に行えるようにします。
 ## 動作環境
 
 Widows11 x64
+
 その他デバイスでは動作確認はされていません。
 
 ## 環境構築
@@ -39,12 +40,15 @@ Pathという環境変数に%JAVA_HOME%\binというパスを追加してくだ�
 ### jenv change version
 
 指定したバージョンにjdkを変更します。
+
 入力例：jenv change jdk-20.0.2+9
 
 ### jenv list
 
 インストール可能なjdkのバージョンを表示します。
+
 出力例：
+
 8
 11
 16
@@ -58,8 +62,11 @@ Pathという環境変数に%JAVA_HOME%\binというパスを追加してくだ�
 ### jenv list version
 
 指定したバージョンでのインストール可能なjdkの一覧を表示します。
+
 入力例：jenv list 8
+
 出力例：
+
 jdk8u422-b05
 jdk8u412-b08
 jdk8u402-b06
@@ -80,11 +87,13 @@ jdk8u302-b08
 ### jenv install version
 
 指定したバージョンのjdkをインストールします。
+
 入力例：jenv install jdk8u422-b05
 
 ### jenv delete version
 
 指定したバージョンのjdkを削除します。
+
 入力例：jenv delete jdk8u422-b05
 
 ## 注意点
