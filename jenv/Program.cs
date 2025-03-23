@@ -4,6 +4,7 @@ using System.IO;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using System.IO.Compression;
+using System.Diagnostics;
 
 namespace jenv
 {
@@ -34,7 +35,7 @@ namespace jenv
 						{
 							changeVersion(args[1]);
 						}
-						catch
+						catch (IndexOutOfRangeException)
 						{
 							Console.WriteLine("引数が不正です");
 							showHelp();
@@ -81,8 +82,19 @@ namespace jenv
 
 		static void showVersion()
 		{
-			var path = Environment.GetEnvironmentVariable("JAVA_HOME");
-			Console.WriteLine(filename(path));
+			try
+			{
+				Process process = new Process();
+				process.StartInfo.FileName = "java";
+				process.StartInfo.Arguments = "-version";
+				process.StartInfo.UseShellExecute = false;
+				process.StartInfo.RedirectStandardOutput = true;
+				process.Start();
+				process.WaitForExit();
+				Console.WriteLine(process.StandardOutput.ReadToEnd());
+			} catch {
+				Console.WriteLine("設定されていません");
+			}
 		}
 
 		static void showHelp()
@@ -101,24 +113,47 @@ namespace jenv
 		static void changeVersion(string version)
 		{
 			var versions = getVersions();
-			var versionPath = Environment.GetEnvironmentVariable("JENV_HOME") + "\\java\\" + version;
+			var jenvPath = Environment.GetEnvironmentVariable("JENV_HOME");
+			var versionPath = jenvPath + "\\java\\" + version;
+			var currentPath = jenvPath + "\\current";
 			if (Array.IndexOf(versions, versionPath) != -1)
 			{
-				Environment.SetEnvironmentVariable("JAVA_HOME", versionPath, EnvironmentVariableTarget.User);
-				Console.WriteLine("変更が完了しました\n適用させるためにはプロセスを再起動してください");
+				if (Directory.Exists(currentPath)) Directory.Delete(currentPath, true);
+				copyDirectory(versionPath, currentPath);
+				Console.WriteLine("変更が完了しました");
 			} else
 			{
 				Console.WriteLine("ダウンロードされていないバージョンです");
 			}
 		}
 
+		static void copyDirectory(string src, string dest)
+		{
+			Directory.CreateDirectory(dest);
+			
+			foreach (var file in Directory.GetFiles(src)) {
+				File.Copy(file, dest + "\\" + Path.GetFileName(file), true);
+			}
+			foreach (var dir in Directory.GetDirectories(src))
+			{
+				copyDirectory(dir, dest + "\\" + Path.GetFileName(dir));
+			}
+		}
+
 		static void showVersions()
 		{
-			var versions = getVersions();
-			foreach (var version in  versions)
+			try
 			{
-				Console.WriteLine(filename(version));
+				var versions = getVersions();
+				foreach (var version in versions)
+				{
+					Console.WriteLine(filename(version));
+				}
+			} catch
+			{
+				Console.WriteLine("インストールされていません");
 			}
+			
 		}
 
 		static string[] getVersions()
@@ -198,7 +233,7 @@ namespace jenv
 		{
 			try
 			{
-				string path = Environment.GetEnvironmentVariable("JENV_HOME") + "/java/" + version;
+				string path = Environment.GetEnvironmentVariable("JENV_HOME") + "\\java\\" + version;
 				Directory.Delete(path, true);
 				Console.WriteLine("削除が完了しました");
 			}
